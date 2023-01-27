@@ -1,5 +1,3 @@
-import csv
-
 import numpy as np
 
 
@@ -21,29 +19,39 @@ def min_edit_distance(token1, token2):
             up = dist_matrix[i - 1][j]
             left = dist_matrix[i][j - 1]
             dist_matrix[i][j] = min(up, left, up_left) + 1
-    print(np.array_str(dist_matrix, precision=2))
+    # print(np.array_str(dist_matrix, precision=2))
+    return dist_matrix[len(token1)][len(token2)]
 
 
-def write_csv(name, data):
-    with open(f'{name}.csv', 'w') as csvfile:
-        writer = csv.DictWriter(csvfile)
-        writer.writeheader()
-        writer.writerows(data)
+def read_dat(path):
+    tokens = []
+    with open(path, 'r') as f:
+        lines = f.readlines()
+        i = 0
 
+        current_correct_token = ""
+        for l in lines:
+            if l.startswith("$"):
+                current_correct_token = l[1:-1].lower()
+            elif current_correct_token != "":
+                tokens.append((current_correct_token, l[:-1].lower()))
+            else:
+                print(f"SHIT {l}")
+    return tokens
 
-def cal_med(path):
-    file = open(path, 'r')
-    lines = file.readlines()
-    words = {}
-    correct_word = ''
-    for line in lines:
-        token = line[:-1].lower()
-        if '$' in line:
-            correct_word = token
-            words[correct_word] = list()
-        else:
-            words[correct_word].append(token)
+# def cal_med(path):
+#     file = open(path, 'r')
+#     lines = file.readlines()
+#     words = {}
+#     correct_word = ''
+#     for line in lines:
+#         token = line[:-1].lower()
+#         if '$' in line:
+#             correct_word = token
+#             words[correct_word] = list()
+#         else:
+#             words[correct_word].append(token)
 
 
 if __name__ == "__main__":
-    cal_med('..\data\missp.dat')
+    read_dat("../data/missp.dat")
