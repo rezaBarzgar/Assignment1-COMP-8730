@@ -1,39 +1,34 @@
+import json
 import time
-
-from utils.utils import read_dat, min_edit_distance
-
+from utils.utils import *
 import nltk
-from nltk.corpus import wordnet
+from multiprocessing import Pool
+import pytrec_eval
+
 
 def main():
-    ok = nltk.download("wordnet")
-    if not ok:
-        print("not ok")
+    wordnet_ = nltk.download("wordnet")
+    if not wordnet_:
+        print("unable to download Wordnet")
         return
-    tokens_pair = read_dat("data/missp.dat")
-    # dist = min_edit_distance(tokens_pair[0][0], tokens_pair[0][1])
-    # print(dist)
-    wn = wordnet.words(lang='eng')
-    print("good")
-    # find_distance_naive(wn, tokens_pair)
-    print(len(list(wn)))
-    # len(wn)
-    # for w in wn:
-    #     i += 1
-    #     print(w)
-    #     if i == 10:
-    #         break
-
-
-def find_distance_naive(dictionary, token_set):
+    tokens_pairs = read_data("data/missp.dat")
     start = time.time()
-    for i, word in enumerate(dictionary):
-        if i > 10:
-            break
-        for t in token_set:
-            _ = min_edit_distance(t[1], word)
-    end = time.time()
-    print(end-start)
+    with Pool() as pool:
+        results = pool.map(most_similar_words, tokens_pairs)
+
+    data = {}
+    for i in range(len(results)):
+        success_at_1, success_at_5, success_at_10 = success_at_k(results[i], tokens_pairs[i])
+        data[f'{tokens_pairs[i]}'] = {
+            'success_at_1': success_at_1,
+            'success_at_5': success_at_5,
+            'success_at_10': success_at_10
+        }
+    print(data)
+    evaluator = pytrec_eval.RelevanceEvaluator(
+        data, {'success'})
+    print(json.dumps(evaluator.evaluate(data), indent=1))
+    print(f'runtime: {time.time() - start}')
 
 
 if __name__ == '__main__':
