@@ -40,9 +40,9 @@ def read_data(path):
     return tokens
 
 
-def most_similar_words(token):
+def most_similar_words(token, dictionary):
     similar_words = []
-    dictionary = wordnet.words(lang='eng')
+    print(token)
     for word in dictionary:
         med = min_edit_distance(token[1], word)
         if len(similar_words) < 10:
@@ -52,8 +52,7 @@ def most_similar_words(token):
             if med < max_distance[1]:
                 similar_words.remove(max_distance)
                 similar_words.append((word, med))
-
-    similar_words.sort(key=lambda a: (a[1], a[0]))
+    similar_words.sort(key=lambda a: a[1])
     return similar_words
 
 
@@ -70,8 +69,8 @@ def success_at_k(result, token_pair):
     return s_at_1, s_at_5, s_at_10
 
 
-# if __name__ == "__main__":
-#     list_ = [('america', 1), ('american', 2), ('acerola', 3), ('ameba', 3), ('ameban', 3), ('amebic', 3),
-#              ('amen-ra', 3),
-#              ('amentia', 3), ('amerind', 3), ('average', 3)]
-#     print(success_at_k(list_, ('america', 'amerkia')))
+if __name__ == "__main__":
+    pass
+    # dictionary = list(wordnet.words(lang='eng'))
+    # aaa = most_similar_words(('good', 'god'), dictionary)
+    # print(aaa)
