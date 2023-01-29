@@ -42,7 +42,6 @@ def read_data(path):
 
 def most_similar_words(token, dictionary):
     similar_words = []
-    print(token)
     for word in dictionary:
         med = min_edit_distance(token[1], word)
         if len(similar_words) < 10:
@@ -62,15 +61,24 @@ def success_at_k(result, token_pair):
     s_at_10 = 0
     if token_pair[0] == result[0][0]:
         s_at_1 = 1
-    if token_pair[0] in result[:5][0]:
         s_at_5 = 1
-    if token_pair[0] in result[:][0]:
         s_at_10 = 1
+    else:
+        for item in result[:5]:
+            if item[0] == token_pair[0]:
+                s_at_5 = 1
+                s_at_10 = 1
+                break
+        for item in result[5:]:
+            if token_pair[0] == item[0]:
+                s_at_10 = 1
+                break
     return s_at_1, s_at_5, s_at_10
 
 
 if __name__ == "__main__":
     pass
-    # dictionary = list(wordnet.words(lang='eng'))
-    # aaa = most_similar_words(('good', 'god'), dictionary)
-    # print(aaa)
+    dictionary = list(wordnet.words(lang='eng'))
+    aaa = most_similar_words(('austrian', 'austrain'), dictionary)
+    s1, s5, s10 = success_at_k(aaa, ('austrian', 'austrain'))
+    print(s1, s5, s10)
