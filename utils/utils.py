@@ -1,9 +1,11 @@
-import numpy as np
-from nltk.corpus import wordnet
+# import numpy as np
+# from nltk.corpus import wordnet
+from multiprocessing import synchronize
 
 
 def min_edit_distance(token1, token2):
-    dist_matrix = np.zeros((len(token1) + 1, len(token2) + 1))
+    dist_matrix = [[0]*(len(token2) +1)  for i in range(len(token1) + 1)]
+    # dist_matrix = np.zeros((len(token1) + 1, len(token2) + 1), dtype=np.int)
 
     # initial values
     for i in range(len(token1) + 1):
@@ -14,7 +16,7 @@ def min_edit_distance(token1, token2):
     for i in range(1, len(token1) + 1):
         for j in range(1, len(token2) + 1):
             up_left = dist_matrix[i - 1][j - 1]
-            if i == j and token1[i - 1] == token2[j - 1]:
+            if token1[i - 1] == token2[j - 1]:
                 dist_matrix[i][j] = up_left
                 continue
             up = dist_matrix[i - 1][j]
@@ -41,6 +43,7 @@ def read_data(path):
 
 
 def most_similar_words(token, dictionary):
+
     similar_words = []
     for word in dictionary:
         med = min_edit_distance(token[1], word)
@@ -77,8 +80,6 @@ def success_at_k(result, token_pair):
 
 
 if __name__ == "__main__":
-    pass
-    dictionary = list(wordnet.words(lang='eng'))
-    aaa = most_similar_words(('austrian', 'austrain'), dictionary)
-    s1, s5, s10 = success_at_k(aaa, ('austrian', 'austrain'))
-    print(s1, s5, s10)
+    print(min_edit_distance("i'ld", "i'd"))
+else:
+    counter = 0
