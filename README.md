@@ -6,7 +6,7 @@ against the tokens of the dictionary and check if the correct
 spelling exists in the K least distant words which are retrieved from the dictionary. The output of this assignment is the average occurrence of the correct word in the set of the top K least distant words.
 
 ### setup
-After cloning the ripository, run the following command for set up rhe environment.
+After cloning the ripository, run the following command for setting up the environment.
 
 `pip install -r requirements.txt`
 
