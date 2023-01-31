@@ -10,5 +10,13 @@ After cloning the ripository, run the following command for setting up the envir
 
 `pip install -r requirements.txt`
 
+### Results
+|                                       | Python   | Go    |
+|---------------------------------------|----------|-------|
+| Success at 1                          | 27%     | 26\%  |
+| Success at 5                          | 44%     | 44\%  |
+| Success at 10                         | 50%     | 49\%  |
+| runtime                               | 14.3 H   | 18min |
+
 ### Details
 All the details about the Assignment has been provided in [NLP_Assignment1.pdf](https://github.com/rezaBarzgar/Assignment1-COMP-8730/blob/master/NLP_Assignment1.pdf)
