@@ -1,5 +1,5 @@
 
-Introduction
+Introduction [^1]
 ============
 
 As the assignment indicated, we used the Wordnet dictionary and the
@@ -73,3 +73,5 @@ Discussion
 This method is not applicable in spell correction programs due to its
 time complexity. Furthermore, this method for spell correction misses
 many misspelled words because it does not consider the context.
+
+[^1]: You can also see the https://github.com/rezaBarzgar/Assignment1-COMP-8730/blob/master/NLP_Assignment1.pdf
