@@ -1,13 +1,14 @@
 import json
 import time
-from multiprocessing import Pool
+from multiprocessing import Pool, Lock
 from utils.utils import *
 import nltk
 from nltk.corpus import wordnet
 import pytrec_eval
 
 
-def main():
+def main(sample_size=None):
+
     wordnet_ = nltk.download("wordnet")
     if not wordnet_:
         print("unable to download Wordnet")
@@ -19,8 +20,11 @@ def main():
     # results = []
     # for item in tokens_pairs[:6]:
     #     results.append(most_similar_words(item, dictionary))
+
+    if not sample_size:
+        sample_size = len(tokens_pairs)
     with Pool(6) as pool:
-        args = list(zip(tokens_pairs[:3], [dictionary for i in range(len(tokens_pairs[:3]))]))
+        args = list(zip(tokens_pairs[:sample_size], [dictionary for i in range(len(tokens_pairs[:sample_size]))]))
         results = pool.starmap(most_similar_words, args)
     print(f'runtime: {time.time() - start}')
     qrel = {}
@@ -42,8 +46,8 @@ def main():
     print(json.dumps(result_data, indent=1))
     for measure in sorted(list(result_data[list(result_data.keys())[0]].keys())):
         print(measure, 'average:', round(pytrec_eval.compute_aggregated_measure(
-                  measure, [query_measures[measure] for query_measures in result_data.values()]), 2))
+            measure, [query_measures[measure] for query_measures in result_data.values()]), 2))
 
 
 if __name__ == '__main__':
-    main()
+    main(50)
