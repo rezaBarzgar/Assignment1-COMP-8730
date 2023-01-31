@@ -14,7 +14,7 @@ def main(sample_size=None):
         print("unable to download Wordnet")
         return
     dictionary = list(wordnet.words(lang='eng'))
-    tokens_pairs = read_data("data/missp.dat")
+    tokens_pairs = read_data("../data/missp.dat")
     start = time.time()
 
     # results = []
